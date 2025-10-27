@@ -12,7 +12,7 @@ const AllBooks = () => {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="p-4">
+    <div className="p-4 max-w-7xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">All Books</h1>
 
       <div className="overflow-x-auto">
@@ -35,7 +35,7 @@ const AllBooks = () => {
                 <td className="px-4 py-2">{book.author}</td>
                 <td className="px-4 py-2">{book.genre}</td>
                 <td className="px-4 py-2">{book.copies}</td>
-                <td className="px-4 py-2">{book.available ? "Yes" : "No"}</td>
+                <td className="px-4 py-2">{book.available ? "Available" : "Unavailable"}</td>
                 <td className="px-4 py-2 text-center flex justify-center gap-4">
                   <button className="hover:text-destructive transition">
                     <Trash2 size={20} />
@@ -53,7 +53,7 @@ const AllBooks = () => {
         </table>
       </div>
 
-      {/* Pagination Buttons */}
+      
       <div className="flex justify-center gap-4 mt-6">
         <button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
