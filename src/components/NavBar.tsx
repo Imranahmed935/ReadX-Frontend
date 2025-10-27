@@ -12,7 +12,7 @@ const NavBar = () => {
 
       
         <nav className="hidden md:flex gap-6">
-          <Link to="/all" className="hover:text-accent-foreground transition">
+          <Link to="/" className="hover:text-accent-foreground transition">
             All Books
           </Link>
           <Link to="/add" className="hover:text-accent-foreground transition">

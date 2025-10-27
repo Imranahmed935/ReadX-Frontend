@@ -16,9 +16,18 @@ export const allBookApi = baseApi.injectEndpoints({
         url: `/api/books?page=${page}&limit=${limit}`,
         method: "GET",
       }),
+     providesTags: ["allBooks"],
+    }),
+
+    deleteBook: builder.mutation({
+      query: (id:string) => ({
+        url: `/api/books/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Books"],
     }),
   }),
   overrideExisting: false,
 });
 
-export const { useCreateBookMutation, useAllBooksQuery } = allBookApi;
+export const { useCreateBookMutation, useAllBooksQuery, useDeleteBookMutation } = allBookApi;

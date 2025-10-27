@@ -10,7 +10,7 @@ export const router = createBrowserRouter([
     path: "/",
     Component: App, 
     children: [
-      { path: "all", Component: AllBooks },
+      { index:true, Component: AllBooks },
       { path: "add", Component: AddBook },
       { path: "borrow", Component: BorrowSummery },
     ],
