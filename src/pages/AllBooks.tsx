@@ -1,10 +1,78 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from "react";
+import { useAllBooksQuery } from "@/redux/featured/allBook.api";
+import { Trash2, Edit, BookOpen } from "lucide-react";
 
 const AllBooks = () => {
-    return (
-        <div>
-            <h1>All book page</h1>
-        </div>
-    );
+  const [page, setPage] = useState(1);
+  const limit = 5; 
+
+  const { data: allBook, isLoading } = useAllBooksQuery({ page, limit });
+
+  if (isLoading) return <div>Loading...</div>;
+
+  return (
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-6">All Books</h1>
+
+      <div className="overflow-x-auto">
+        <table className="table-auto w-full border border-border rounded-lg bg-card">
+          <thead className="bg-secondary text-secondary-foreground">
+            <tr>
+              <th className="px-4 py-2 text-left">Title</th>
+              <th className="px-4 py-2 text-left">Author</th>
+              <th className="px-4 py-2 text-left">Genre</th>
+              <th className="px-4 py-2 text-left">Copies</th>
+              <th className="px-4 py-2 text-left">Available</th>
+              <th className="px-4 py-2 text-center">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {allBook?.data?.map((book: any) => (
+              <tr key={book.isbn} className="hover:bg-muted/20 transition">
+                <td className="px-4 py-2">{book.title}</td>
+                <td className="px-4 py-2">{book.author}</td>
+                <td className="px-4 py-2">{book.genre}</td>
+                <td className="px-4 py-2">{book.copies}</td>
+                <td className="px-4 py-2">{book.available ? "Yes" : "No"}</td>
+                <td className="px-4 py-2 text-center flex justify-center gap-4">
+                  <button className="hover:text-destructive transition">
+                    <Trash2 size={20} />
+                  </button>
+                  <button className="hover:text-accent transition">
+                    <Edit size={20} />
+                  </button>
+                  <button className="hover:text-primary transition">
+                    <BookOpen size={20} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pagination Buttons */}
+      <div className="flex justify-center gap-4 mt-6">
+        <button
+          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+          className="px-4 py-2 bg-secondary text-secondary-foreground rounded hover:bg-muted transition"
+          disabled={page === 1}
+        >
+          Prev
+        </button>
+        <span className="px-4 py-2">{page}</span>
+        <button
+          onClick={() => setPage((prev) => prev + 1)}
+          className="px-4 py-2 bg-secondary text-secondary-foreground rounded hover:bg-muted transition"
+          disabled={allBook?.data?.length < limit}
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default AllBooks;
