@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useAllBooksQuery, useDeleteBookMutation } from "@/redux/featured/allBook.api";
-import { Trash2, Edit, BookOpen } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
-import { Button } from "@/components/ui/button";
 import AddBookModal from "@/components/AddBookModal";
-
+import BookUpdateModal from "@/components/BookUpdateModal";
+import BorrowModal from "@/components/BorrowModal";
 
 const AllBooks = () => {
   const [page, setPage] = useState(1);
@@ -14,7 +14,6 @@ const AllBooks = () => {
 
   const { data: allBook, isLoading } = useAllBooksQuery({ page, limit });
   const [deleteBook] = useDeleteBookMutation(); 
-
 
   const handleDelete = (id: string) => {
     Swal.fire({
@@ -44,10 +43,11 @@ const AllBooks = () => {
 
   return (
     <div className="p-4 max-w-7xl mx-auto">
-<div className="flex justify-between items-center py-4">
-      <h1 className="text-2xl font-bold mb-6">All Books</h1>
-      <Button><AddBookModal/></Button>
-</div>
+      <div className="flex justify-between items-center py-4">
+        <h1 className="text-2xl font-bold mb-6">All Books</h1>
+        <AddBookModal />
+      </div>
+
       <div className="overflow-x-auto">
         <table className="table-auto w-full border border-border rounded-lg bg-card">
           <thead className="bg-secondary text-secondary-foreground">
@@ -63,7 +63,7 @@ const AllBooks = () => {
 
           <tbody>
             {allBook?.data?.map((book: any) => (
-              <tr key={book.isbn} className="hover:bg-muted/20 transition">
+              <tr key={book._id} className="hover:bg-muted/20 transition">
                 <td className="px-4 py-2">{book.title}</td>
                 <td className="px-4 py-2">{book.author}</td>
                 <td className="px-4 py-2">{book.genre}</td>
@@ -76,12 +76,8 @@ const AllBooks = () => {
                   >
                     <Trash2 size={20} />
                   </button>
-                  <button className="hover:text-accent transition">
-                    <Edit size={20} />
-                  </button>
-                  <button className="hover:text-primary transition">
-                    <BookOpen size={20} />
-                  </button>
+                  <BookUpdateModal book={book} />
+                  <BorrowModal book={book} /> 
                 </td>
               </tr>
             ))}

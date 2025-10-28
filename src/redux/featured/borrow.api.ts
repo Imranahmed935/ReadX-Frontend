@@ -9,14 +9,15 @@ export const allBookApi = baseApi.injectEndpoints({
         method: "POST",
         data: borrowInfo,
       }),
+      invalidatesTags: ["Borrow"], 
     }),
-
  
     allBorrowBooks: builder.query<any, void>({
       query: () => ({
         url: "/api/borrow",
         method: "GET",
       }),
+      providesTags: ["Borrow"], 
     }),
   }),
   overrideExisting: false,

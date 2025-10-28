@@ -7,7 +7,8 @@ export const baseApi = createApi({
     tagTypes: [
        "Books",
        "allBooks",
-       "createBook"
+       "createBook",
+       "Borrow"
     ],
     endpoints:()=>({})
 })
