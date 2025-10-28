@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { useUpdateBookMutation } from "@/redux/featured/allBook.api";
 import { Edit } from "lucide-react";
+import { toast } from "sonner";
 
 interface BookUpdateModalProps {
   book: any;
@@ -64,6 +65,7 @@ const BookUpdateModal = ({ book }: BookUpdateModalProps) => {
 
     try {
       await updateBook({ id: book._id, data: updatedData }).unwrap();
+      toast.success("Book Updated successfully")
       setOpen(false);
     } catch (err) {
       console.error("Update failed:", err);

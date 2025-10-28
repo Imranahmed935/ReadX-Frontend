@@ -39,71 +39,72 @@ const AllBooks = () => {
     });
   };
 
-  if (isLoading) return <div className=" text-center py-20">Loading...</div>;
+  if (isLoading) return <div className="text-center py-20">Loading...</div>;
 
   return (
     <div className="p-4 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center py-4">
-        <h1 className="text-2xl font-bold mb-6">All Books</h1>
-        <AddBookModal />
-      </div>
+  <div className="flex justify-between items-center py-4">
+    <h1 className="text-2xl font-bold mb-6">All Books</h1>
+    <AddBookModal />
+  </div>
 
-      <div className="overflow-x-auto">
-        <table className="table-auto w-full border border-border rounded-lg bg-card">
-          <thead className="bg-secondary text-secondary-foreground">
-            <tr>
-              <th className="px-4 py-2 text-left">Title</th>
-              <th className="px-4 py-2 text-left">Author</th>
-              <th className="px-4 py-2 text-left">Genre</th>
-              <th className="px-4 py-2 text-left">Copies</th>
-              <th className="px-4 py-2 text-left">Available</th>
-              <th className="px-4 py-2 text-center">Actions</th>
-            </tr>
-          </thead>
+  <div className="overflow-x-auto border rounded-xl">
+    <table className="w-full border border-gray-300 rounded-lg overflow-hidden shadow-sm bg-white">
+      <thead className="bg-gray-100 text-gray-700 uppercase text-sm">
+        <tr>
+          <th className="px-4 py-3 text-left border border-gray-300">Title</th>
+          <th className="px-4 py-3 text-left border border-gray-300">Author</th>
+          <th className="px-4 py-3 text-left border border-gray-300">Genre</th>
+          <th className="px-4 py-3 text-left border border-gray-300">Copies</th>
+          <th className="px-4 py-3 text-left border border-gray-300">Available</th>
+          <th className="px-4 py-3 text-center border border-gray-300">Actions</th>
+        </tr>
+      </thead>
 
-          <tbody>
-            {allBook?.data?.map((book: any) => (
-              <tr key={book._id} className="hover:bg-muted/20 transition">
-                <td className="px-4 py-2">{book.title}</td>
-                <td className="px-4 py-2">{book.author}</td>
-                <td className="px-4 py-2">{book.genre}</td>
-                <td className="px-4 py-2">{book.copies}</td>
-                <td className="px-4 py-2">{book.available ? "Available" : "Unavailable"}</td>
-                <td className="px-4 py-2 text-center flex justify-center gap-4">
-                  <button
-                    className="hover:text-destructive transition"
-                    onClick={() => handleDelete(book._id)}
-                  >
-                    <Trash2 size={20} />
-                  </button>
-                  <BookUpdateModal book={book} />
-                  <BorrowModal book={book} /> 
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <tbody>
+        {allBook?.data?.map((book: any) => (
+          <tr key={book._id} className="hover:bg-gray-50 transition border-b border-gray-200">
+            <td className="px-4 py-3 border border-gray-200">{book.title}</td>
+            <td className="px-4 py-3 border border-gray-200">{book.author}</td>
+            <td className="px-4 py-3 border border-gray-200">{book.genre}</td>
+            <td className="px-4 py-3 border border-gray-200">{book.copies}</td>
+            <td className="px-4 py-3 border border-gray-200">{book.available ? "Available" : "Unavailable"}</td>
+            <td className="px-4 py-3 border border-gray-200 text-center flex justify-center gap-2">
+              <button
+                className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                onClick={() => handleDelete(book._id)}
+              >
+                <Trash2 size={18} />
+              </button>
+              <BookUpdateModal book={book} />
+              <BorrowModal book={book} /> 
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 
-      {/* Pagination */}
-      <div className="flex justify-center gap-4 mt-6">
-        <button
-          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-          className="px-4 py-2 bg-secondary text-secondary-foreground rounded hover:bg-muted transition"
-          disabled={page === 1}
-        >
-          Prev
-        </button>
-        <span className="px-4 py-2">{page}</span>
-        <button
-          onClick={() => setPage((prev) => prev + 1)}
-          className="px-4 py-2 bg-secondary text-secondary-foreground rounded hover:bg-muted transition"
-          disabled={allBook?.data?.length < limit}
-        >
-          Next
-        </button>
-      </div>
-    </div>
+  {/* Pagination */}
+  <div className="flex justify-center gap-3 mt-6">
+    <button
+      onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+      className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition disabled:opacity-50"
+      disabled={page === 1}
+    >
+      Prev
+    </button>
+    <span className="px-4 py-2 bg-gray-100 rounded">{page}</span>
+    <button
+      onClick={() => setPage((prev) => prev + 1)}
+      className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition disabled:opacity-50"
+      disabled={allBook?.data?.length < limit}
+    >
+      Next
+    </button>
+  </div>
+</div>
+
   );
 };
 

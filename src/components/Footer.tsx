@@ -1,23 +1,22 @@
 import { Link } from "react-router-dom";
 import { Github, Twitter, Mail } from "lucide-react";
+import AddBookModal from "./AddBookModal";
 
 const Footer = () => {
   return (
     <footer className="bg-primary text-primary-foreground shadow-inner mt-12">
-      <div className="container mx-auto px-4 py-8 flex flex-col md:flex-row justify-between items-center gap-6">
+      <div className="lg:max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row justify-between items-center gap-6">
        
         <div className="text-2xl font-bold hover:text-accent-foreground transition">
           ReadX
         </div>
 
       
-        <nav className="flex flex-col md:flex-row gap-4 text-sm md:text-base">
-          <Link to="/all" className="hover:text-accent-foreground transition">
+        <nav className="hidden md:flex items-center gap-6">
+          <Link to="/" className="hover:text-accent-foreground transition">
             All Books
           </Link>
-          <Link to="/add" className="hover:text-accent-foreground transition">
-            Add Book
-          </Link>
+           <AddBookModal/>
           <Link to="/borrow" className="hover:text-accent-foreground transition">
             Borrow Summary
           </Link>
