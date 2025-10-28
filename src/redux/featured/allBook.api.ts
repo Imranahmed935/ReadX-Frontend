@@ -3,31 +3,41 @@ import { baseApi } from "../baseApi";
 
 export const allBookApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    // ✅ CREATE BOOK
     createBook: builder.mutation({
-      query: (BookInfo) => ({
+      query: (bookInfo) => ({
         url: "/api/books",
         method: "POST",
-        data: BookInfo,
+        data: bookInfo,
       }),
+      invalidatesTags: ["Books"], // ✅ Invalidate Books list
     }),
 
+    // ✅ GET ALL BOOKS
     allBooks: builder.query<any, { page?: number; limit?: number } | void>({
       query: ({ page = 1, limit = 10 } = {}) => ({
         url: `/api/books?page=${page}&limit=${limit}`,
         method: "GET",
       }),
-     providesTags: ["allBooks"],
+      providesTags: ["Books"], // ✅ Provide Books tag
     }),
 
+    // ✅ DELETE BOOK
     deleteBook: builder.mutation({
-      query: (id:string) => ({
+      query: (id: string) => ({
         url: `/api/books/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Books"],
+      invalidatesTags: ["Books"], // ✅ Invalidate Books list
     }),
   }),
+
   overrideExisting: false,
 });
 
-export const { useCreateBookMutation, useAllBooksQuery, useDeleteBookMutation } = allBookApi;
+// ✅ Export hooks
+export const { 
+  useCreateBookMutation, 
+  useAllBooksQuery, 
+  useDeleteBookMutation 
+} = allBookApi;

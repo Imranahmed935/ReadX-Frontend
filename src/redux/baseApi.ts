@@ -6,7 +6,8 @@ export const baseApi = createApi({
     baseQuery:axiosBaseQuery(),
     tagTypes: [
        "Books",
-       "allBooks"
+       "allBooks",
+       "createBook"
     ],
     endpoints:()=>({})
 })

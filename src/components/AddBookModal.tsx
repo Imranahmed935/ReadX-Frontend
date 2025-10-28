@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -12,6 +14,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useCreateBookMutation } from "@/redux/featured/allBook.api";
+import { toast } from "sonner"; 
 
 interface FormErrors {
   title?: string;
@@ -31,6 +35,10 @@ const AddBookModal = () => {
   const [copies, setCopies] = useState(1);
   const [available, setAvailable] = useState(true);
   const [errors, setErrors] = useState<FormErrors>({});
+  const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate();
+  const [createBook, { isLoading }] = useCreateBookMutation();
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -43,26 +51,26 @@ const AddBookModal = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     const bookData = { title, author, isbn, genre, copies, available };
-    console.log("Book Data:", bookData);
 
-    // Reset form
-    setTitle("");
-    setAuthor("");
-    setIsbn("");
-    setGenre("");
-    setCopies(1);
-    setAvailable(true);
-    setErrors({});
+    try {
+      await createBook(bookData).unwrap();
+      toast.success("Book added successfully!");
+      setOpen(false); 
+      navigate("/"); 
+    } catch (error: any) {
+      console.error("Failed to add book:", error);
+      toast.error("Failed to add book. Please try again.");
+    }
   };
 
   return (
-    <Dialog>
-      <DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
         <Button>Add Book</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
@@ -78,6 +86,7 @@ const AddBookModal = () => {
             <Label htmlFor="title">Title</Label>
             <Input
               id="title"
+              placeholder="Enter book title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className={errors.title ? "border-red-500" : ""}
@@ -89,6 +98,7 @@ const AddBookModal = () => {
             <Label htmlFor="author">Author</Label>
             <Input
               id="author"
+              placeholder="Enter author name"
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
               className={errors.author ? "border-red-500" : ""}
@@ -100,6 +110,7 @@ const AddBookModal = () => {
             <Label htmlFor="isbn">ISBN</Label>
             <Input
               id="isbn"
+              placeholder="Enter ISBN number"
               value={isbn}
               onChange={(e) => setIsbn(e.target.value)}
               className={errors.isbn ? "border-red-500" : ""}
@@ -107,13 +118,15 @@ const AddBookModal = () => {
             {errors.isbn && <p className="text-red-500 text-sm">{errors.isbn}</p>}
           </div>
 
-          <div className="grid gap-1">
+          <div className="grid gap-1 w-full">
             <Label htmlFor="genre">Genre</Label>
             <Select onValueChange={(value) => setGenre(value)} value={genre}>
-              <SelectTrigger className={errors.genre ? "border-red-500" : ""}>
+              <SelectTrigger
+                className={`w-full ${errors.genre ? "border-red-500" : ""}`}
+              >
                 <SelectValue placeholder="Select a genre" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="w-full">
                 {genres.map((g) => (
                   <SelectItem key={g} value={g}>
                     {g}
@@ -129,6 +142,7 @@ const AddBookModal = () => {
             <Input
               id="copies"
               type="number"
+              placeholder="Enter number of copies"
               value={copies}
               min={1}
               onChange={(e) => setCopies(Number(e.target.value))}
@@ -146,8 +160,8 @@ const AddBookModal = () => {
             <Label htmlFor="available">Available</Label>
           </div>
 
-          <Button type="submit" className="mt-2">
-            Add Book
+          <Button type="submit" className="mt-2 w-full" disabled={isLoading}>
+            {isLoading ? "Adding..." : "Add Book"}
           </Button>
         </form>
       </DialogContent>
