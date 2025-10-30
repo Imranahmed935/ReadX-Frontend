@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useAllBooksQuery, useDeleteBookMutation } from "@/redux/featured/allBook.api";
-import { Trash2 } from "lucide-react";
+import { Eye, Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import AddBookModal from "@/components/AddBookModal";
 import BookUpdateModal from "@/components/BookUpdateModal";
 import BorrowModal from "@/components/BorrowModal";
+import { Link } from "react-router";
 
 const AllBooks = () => {
   const [page, setPage] = useState(1);
@@ -70,14 +71,22 @@ const AllBooks = () => {
             <td className="px-4 py-3 border border-gray-200">{book.copies}</td>
             <td className="px-4 py-3 border border-gray-200">{book.available ? "Available" : "Unavailable"}</td>
             <td className="px-4 py-3 border border-gray-200 text-center flex justify-center gap-2">
-              <button
+             
+              <Link
+              to={`/books/${book._id}`}
+                className="px-2 py-1 rounded"
+              >
+                <Eye size={18} />
+              </Link>
+
+              <BookUpdateModal book={book} />
+              <BorrowModal book={book} /> 
+               <button
                 className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
                 onClick={() => handleDelete(book._id)}
               >
                 <Trash2 size={18} />
               </button>
-              <BookUpdateModal book={book} />
-              <BorrowModal book={book} /> 
             </td>
           </tr>
         ))}

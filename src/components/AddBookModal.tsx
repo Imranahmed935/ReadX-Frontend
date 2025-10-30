@@ -12,7 +12,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useCreateBookMutation } from "@/redux/featured/allBook.api";
 import { toast } from "sonner"; 
@@ -33,7 +32,6 @@ const AddBookModal = () => {
   const [isbn, setIsbn] = useState("");
   const [genre, setGenre] = useState("");
   const [copies, setCopies] = useState(1);
-  const [available, setAvailable] = useState(true);
   const [errors, setErrors] = useState<FormErrors>({});
   const [open, setOpen] = useState(false);
 
@@ -55,7 +53,7 @@ const AddBookModal = () => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    const bookData = { title, author, isbn, genre, copies, available };
+    const bookData = { title, author, isbn, genre, copies };
 
     try {
       await createBook(bookData).unwrap();
@@ -149,15 +147,6 @@ const AddBookModal = () => {
               className={errors.copies ? "border-red-500" : ""}
             />
             {errors.copies && <p className="text-red-500 text-sm">{errors.copies}</p>}
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="available"
-              checked={available}
-              onCheckedChange={(checked) => setAvailable(!!checked)}
-            />
-            <Label htmlFor="available">Available</Label>
           </div>
 
           <Button type="submit" className="mt-2 w-full" disabled={isLoading}>

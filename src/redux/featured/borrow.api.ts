@@ -5,7 +5,7 @@ export const allBookApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     borrowBook: builder.mutation({
       query: (borrowInfo) => ({
-        url: "/api/borrow",
+        url: "/borrow/create",
         method: "POST",
         data: borrowInfo,
       }),
@@ -14,7 +14,7 @@ export const allBookApi = baseApi.injectEndpoints({
  
     allBorrowBooks: builder.query<any, void>({
       query: () => ({
-        url: "/api/borrow",
+        url: "/borrow",
         method: "GET",
       }),
       providesTags: ["Borrow"], 

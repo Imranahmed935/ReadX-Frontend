@@ -33,6 +33,8 @@ const BorrowModal = ({ book }: BorrowModalProps) => {
     if (!book) return toast.success("Please select a book");
     if (!dueDate) return toast.success("Please select a due date");
 
+    
+
     const borrowData = {
       book,
       quantity,
@@ -43,12 +45,14 @@ const BorrowModal = ({ book }: BorrowModalProps) => {
       await borrowBook(borrowData).unwrap();
       navigate("/borrow");
       toast.success("Book borrowed successfully!");
-      setQuantity(1);
+      setQuantity(0);
       setDueDate("");
       setOpen(false);
     } catch (err) {
       console.error("Borrow failed:", err);
-      toast.error("Failed to borrow the book.");
+     if(book.copies < quantity){
+      toast.error("Ops! Unavailable")
+    }
     }
   };
 

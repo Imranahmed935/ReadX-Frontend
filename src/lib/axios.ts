@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000", 
+  baseURL: "https://assignment-3-murex-eta.vercel.app/api/v1", 
 });

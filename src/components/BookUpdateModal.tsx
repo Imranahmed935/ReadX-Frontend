@@ -11,7 +11,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -45,7 +44,6 @@ const BookUpdateModal = ({ book }: BookUpdateModalProps) => {
   const [isbn, setIsbn] = useState(book?.isbn || "");
   const [genre, setGenre] = useState(book?.genre || "");
   const [copies, setCopies] = useState(book?.copies || 1);
-  const [available, setAvailable] = useState(book?.available ?? true);
 
   useEffect(() => {
     if (book) {
@@ -54,14 +52,13 @@ const BookUpdateModal = ({ book }: BookUpdateModalProps) => {
       setIsbn(book.isbn);
       setGenre(book.genre);
       setCopies(book.copies);
-      setAvailable(book.available);
     }
   }, [book]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const updatedData = { title, author, isbn, genre, copies, available };
+    const updatedData = { title, author, isbn, genre, copies };
 
     try {
       await updateBook({ id: book._id, data: updatedData }).unwrap();
@@ -143,14 +140,7 @@ const BookUpdateModal = ({ book }: BookUpdateModalProps) => {
             />
           </div>
 
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="available"
-              checked={available}
-              onCheckedChange={(checked) => setAvailable(!!checked)}
-            />
-            <Label htmlFor="available">Available</Label>
-          </div>
+          
 
           <Button type="submit" className="w-full mt-2">
             Save Changes
